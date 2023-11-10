@@ -200,3 +200,86 @@ end
 -- end
 print("\n")
 
+print("----------Table----------")
+-- Tables are reference types
+tbl = {}
+print("Type of a table is " .. type(tbl))
+tbl["x"] = 20
+i = "x"
+print("Retrieve using []: " .. tbl["x"])
+print("Retrieve using variable " .. tbl[i])
+print("Retrieve using . " .. tbl.x)
+
+tbl.y = 10;
+j = "y"
+
+print("Retrieve using []: " .. tbl["y"])
+print("Retrieve using variable " .. tbl[j])
+print("Retrieve using . " .. tbl.y)
+
+defaultTbl = {}
+print("Value Type of missing key: " .. tostring(defaultTbl["a"]))
+
+-- Table constructor
+
+colors = {
+    r = "#ff0000", 
+  green = "#00ff00", 
+  [3] = "#0000ff",
+  ["w"] = "#ffffff"
+}
+
+print("red: " .. colors.r)
+print("green: " .. colors.green)
+print("blue: " .. colors[3])
+print("white: " .. colors["w"])
+print("\n")
+
+print("----------Arrays----------")
+
+arr = {}
+
+arr[0] = "w"
+arr[1] = "x"
+arr[2] = "y"
+arr[3] = "z"
+
+for i = 0, 3 do
+    print(arr[i])
+end
+
+-- Starts ate index 1
+arr = { "monday", "tuesday", "wednesday" }
+
+for i=1,3 do
+    print (arr[i])
+end
+
+-- Length of an array
+-- Two nil back to back is considered the end of an array
+
+arr = { "a", "b", "c", "d", "e", "f", "g" }
+length = #arr
+print("Length of the array: " .. length)
+
+for i = 1, length do
+    print(arr[i])
+end
+print("\n")
+
+
+print("----------Multidimensional Arrays----------")
+
+num_rows = 4
+num_cols = 4
+
+matrix = {} 
+for i=1,num_rows do
+  matrix[i] = {} 
+  for j=1,num_cols do
+    matrix[i][j] = i * j 
+  end
+end
+
+print(matrix[1][1])
+print(matrix[1][2])
