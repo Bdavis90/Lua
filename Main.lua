@@ -248,7 +248,7 @@ for i = 0, 3 do
     print(arr[i])
 end
 
--- Starts ate index 1
+-- Starts at index 1
 arr = { "monday", "tuesday", "wednesday" }
 
 for i=1,3 do
@@ -283,3 +283,57 @@ end
 
 print(matrix[1][1])
 print(matrix[1][2])
+print("\n")
+
+print("----------Iterators----------")
+
+print("Iterate through a table using pairs\n")
+vector = {x = 34, y = 22, z = 56}
+
+for k, v in pairs(vector) do
+    print("Key: " .. k .. ", value: " .. v)
+end
+
+days = {"Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"}
+
+print ("Iterate through a array using ipairs\n")
+for i , v in ipairs(days) do
+    print("Index: " .. i ..", Value: " .. v)
+end
+print("\n")
+
+print("----------Closure----------")
+-- Aka factory
+function NextNumber()
+    local currentNumber = 0
+
+    return function()
+        currentNumber = currentNumber + 1
+        return currentNumber
+    end
+end
+
+next = NextNumber();
+
+print(next())
+print(next())
+print(next())
+print("\n")
+
+
+print("----------Iterator Functions----------")
+
+-- Aka factory
+function walk(array)
+    local index = 0;
+    return function()
+        index = index + 1
+        return array[index]
+    end
+end
+
+for day in walk(days) do
+    print(day)
+end
+
+print("\n")
