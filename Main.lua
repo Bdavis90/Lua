@@ -337,3 +337,92 @@ for day in walk(days) do
 end
 
 print("\n")
+
+print("----------Meta Table----------")
+
+-- The left argument will be a table with a field called value, the right argument will be a number
+function AddValueToTable(left, right)
+        return left.value + right
+end
+
+function SubstractValueFromTable(left, right)
+    return left.value - right
+end
+meta = {
+    hello = "Meta's hello",
+    __add = AddValueToTable,
+    __sub = SubstractValueFromTable,
+    __mul = function(left, right)
+        return left.value * right
+    end,
+    __div = function(left, right)
+        return left.value / right
+    end,
+    __mod = function(left, right)
+        return left.value % right
+    end,
+    __pow = function(left, right)
+        return left.value ^ right
+    end,
+    __concat = function(left, right)
+        return left.value .. " and " .. right
+    end,
+    __index = function(table, key)
+        return meta[key]
+    end,
+    __newindex = function(table, key, value)
+        meta[key] = value
+    end
+}
+container = {
+    value = 29
+}
+
+-- meta.__add = function(left, right)
+--     return left.value + right
+-- end
+
+setmetatable(container, meta)
+result = container + 4
+print("Add: " .. result)
+result = container - 4
+print("Substract: " .. result)
+result = container * 4
+print("Multiply: " .. result)
+result = container / 4
+print("Divide: " .. result)
+result = container % 4
+print("Modulo: " .. result)
+result = container ^ 4
+print("Power: " .. result)
+result = container .. 4
+print("Concat: " .. result)
+
+
+print("----------__index----------")
+print(container.hello)
+print(meta.hello)
+
+print(getmetatable(container))
+-- __newindex
+print("----------__newindex----------")
+container.goodbye = "goodbye from container"
+print(container.goodbye)
+print(meta.goodbye)
+-- rawset
+print("----------rawset----------")
+container.welcome = "welcome"
+rawset(container, "welcome", "raw welcome")
+print(container.welcome)
+print(meta.welcome)
+print("rawget: " .. rawget(container, "welcome"))
+
+print("----------__call----------")
+tbl = {
+    __call = function(table, val1, val2)
+        return "Hello, from the functor: " .. (val1 + val2)
+    end
+}
+setmetatable(tbl, tbl)
+message = tbl(2,3)
+print("message: " .. message)
