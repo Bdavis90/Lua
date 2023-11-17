@@ -426,3 +426,143 @@ tbl = {
 setmetatable(tbl, tbl)
 message = tbl(2,3)
 print("message: " .. message)
+print("\n")
+
+print("----------Classes----------")
+
+Enemy = { }
+Enemy.health = 200
+Enemy.attack = 4
+Enemy.defense = 20
+Enemy.hit = function(self, damage)
+    damage = damage - self.defense
+    if damage < 0 then
+        damage = 0
+    end
+    self.health = self.health - damage
+end
+Enemy.new = function(self, object)
+    object = object or {} -- Use provided table or create new one
+    setmetatable(object, self) -- assign meta table
+    self.__index = self
+    return object
+end
+
+grunt = Enemy.new(Enemy)
+miniBoss = Enemy.new(Enemy)
+boss = Enemy.new(Enemy, {health = 500, defense = 100})
+miniBoss.health = 250
+
+print("grunt health: " .. grunt.health)
+print("grunt defense: " .. grunt.defense)
+print("miniboss health: " .. miniBoss.health)
+print("miniboss defense: " .. miniBoss.defense)
+print("boss health: " .. boss.health)
+print("boss defense: " .. boss.defense)
+
+print("\n")
+Enemy.hit(boss, 50)
+Enemy.hit(grunt, 55)
+
+print()
+print("grunt health: " .. grunt.health)
+print("boss health: " .. boss.health)
+
+print("\n")
+print("----------: Operator----------")
+
+Vector = { 
+    x = 0, 
+    y = 1, 
+    z = 0
+  }
+  
+  Vector.new = function (self, object) 
+      object = object or {} -- Use provided table, or create new one
+      setmetatable(object, self) -- Assign meta table
+      self.__index = self
+      return object
+  end
+  
+  Vector.print = function(self)
+      print("x:" .. self.x .. ", y: " .. self.y .. ", z: " .. self.z)
+  end 
+  
+  -- same as Vector.new(Vector, nil)
+  velocity = Vector:new() 
+  
+  -- Same as Vector.new(Vector, {x=20,z=10})
+  momentum = Vector:new({x = 20, z = 10})
+
+  -- Using the dot syntax, the print method of the
+-- Vector class is called, and the object instance
+-- is passed as it's first variable (self)
+print("With dot operator")
+Vector.print(velocity)
+Vector.print(momentum)
+
+-- Using the colon syntax, the print method can be
+-- called on instances of the Vector class. The colon
+-- operator will fill in the first variable (self), with
+-- the object instance it is being called on
+print("With : operator")
+velocity:print()
+momentum:print()
+print("\n")
+
+print("----------Tables inside of objects----------")
+Character = {
+    alive = true
+}
+
+Character.position = {
+  x = 10, y = 20, z = 30
+}
+
+-- -- This way has a reference to a table
+-- Character.new = function(self, object)
+--   object = object or {}
+--   setmetatable(object, self)
+--   self.__index = self
+--   return object
+-- end
+
+-- This way creates your own version of a table
+Character.new = function(self, object)
+    object = object or {}
+  
+    -- Assign per instance variables after the object is valid
+    -- but before setting the meta table! Copy all members of
+    -- the new table by value!
+    object.position = {}
+    object.position.x = Character.position.x
+    object.position.y = Character.position.y
+    object.position.z = Character.position.z
+    setmetatable(object, self)
+    self.__index = self
+    return object
+  end
+
+player1 = Character:new()
+player2 = Character:new()
+
+player1.position.x = 0
+player2.position.y = 10
+
+print ("Player 1, position: (" 
+.. player1.position.x .. ", " .. player1.position.y 
+.. ", " .. player1.position.z .. ")")
+
+print ("Player 2, position: (" 
+.. player2.position.x .. ", " .. player2.position.y 
+.. ", " .. player2.position.z .. ")")
+
+if player1.position == player2.position then
+  print ("Player 1 and 2 have the same position reference");
+else
+  print ("Player 1 and 2 have unique positon tables");
+end
+
+print ("Table id:")
+print ("Player 1: " .. tostring(player1.position))
+print ("Player 2 :" .. tostring(player2.position))
